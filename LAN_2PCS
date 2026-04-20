@@ -1,0 +1,91 @@
+Step 2: Connect Both PCs
+
+Since only 2 computers, use Copper Cross-Over Cable
+
+Steps:
+Click Connections (lightning icon)
+Select Copper Cross-Over Cable
+Click PC0
+Select FastEthernet0
+Click PC1
+Select FastEthernet0
+
+Now both PCs are connected.
+
+Step 3: Configure IP Address (PC0)
+Click PC0
+Go to Desktop
+Click IP Configuration
+
+Enter:
+
+Field	Value
+IP Address	192.168.1.1
+Subnet Mask	255.255.255.0
+Default Gateway	(Leave blank)
+
+Close window
+
+Step 4: Configure IP Address (PC1)
+Click PC1
+Go to Desktop
+Click IP Configuration
+
+Enter:
+
+Field	Value
+IP Address	192.168.1.2
+Subnet Mask	255.255.255.0
+Default Gateway	(Leave blank)
+
+Close window
+
+Step 5: Test Connectivity using Ping
+
+Now check if both computers communicate.
+
+From PC0
+Click PC0
+Desktop → Command Prompt
+Type:
+ping 192.168.1.2
+
+Press Enter
+
+Expected Output
+Reply from 192.168.1.2
+Reply from 192.168.1.2
+Reply from 192.168.1.2
+Reply from 192.168.1.2
+
+This means Connection Successful ✅
+
+Step 6: Test Ping from PC1
+Click PC1
+Desktop → Command Prompt
+Type:
+ping 192.168.1.1
+
+If replies come → Network working
+Step 7: Resource Sharing (File Sharing)
+
+Now we simulate resource sharing
+
+Create File in PC0
+Click PC0
+Desktop → Text Editor
+Write:
+Hello from PC0
+Save as:
+file.txt
+Access File from PC1
+Click PC1
+Desktop → Command Prompt
+Type:
+ftp 192.168.1.1
+
+OR
+
+Use Web Browser if HTTP server configured
+
+(For basic labs, ping testing is usually enough)
