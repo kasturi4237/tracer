@@ -1,0 +1,57 @@
+Switch> enable
+Switch# configure terminal
+Switch(config)# vlan 10
+Switch(config-vlan)# name Sales
+Switch(config-vlan)# exit
+Switch(config)# vlan 20
+Switch(config-vlan)# name IT
+Switch(config-vlan)# exit
+
+Switch(config)# interface fastEthernet 0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10
+Switch(config-if)# exit
+
+Switch(config)# interface fastEthernet 0/2
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10
+Switch(config-if)# exit
+
+Switch(config)# interface fastEthernet 0/3
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 20
+Switch(config-if)# exit
+
+Switch(config)# interface fastEthernet 0/4
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 20
+Switch(config-if)# exit
+
+Switch(config)# end
+Switch# write memory
+
+Configure IP addresses on the PCs
+Double-click each PC → Desktop → IP Configuration and set:
+VLAN 10 — Sales
+PC0: 192.168.10.1 / 255.255.255.0
+PC1: 192.168.10.2 / 255.255.255.0
+VLAN 20 — IT
+PC2: 192.168.20.1 / 255.255.255.0
+PC3: 192.168.20.2 / 255.255.255.0
+
+Verify VLANs on the switch
+In the switch CLI, type:
+Switch# show vlan brief
+You should see:
+VLAN Name         Status    Ports
+---- ----------    --------- ---------------------
+1    default       active    Fa0/5, Fa0/6 ...
+10   Sales         active    Fa0/1, Fa0/2
+20   IT            active    Fa0/3, Fa0/4
+
+Test connectivity with ping
+Open PC0 → Desktop → Command Prompt
+ping 192.168.10.2
+Success — PC0 can reach PC1 (same VLAN 10)
+ping 192.168.20.1
+Fails — PC0 cannot reach PC2 (different VLAN — this is correct!)
