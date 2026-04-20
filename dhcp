@@ -1,0 +1,62 @@
+Devices needed
+1× Server (from End Devices), 1× 2960 Switch, 3× PCs
+Connections
+Server → Fa0/1  |  PC0 → Fa0/2  |  PC1 → Fa0/3  |  PC2 → Fa0/4
+Double-click Server → Desktop → IP Configuration:
+IP address
+192.168.1.100
+Subnet mask
+255.255.255.0
+Default gateway
+192.168.1.1
+DNS server
+192.168.1.100
+  Service
+Toggle to ON
+Pool name
+serverPool (any name)
+Default gateway
+192.168.1.1
+DNS server
+192.168.1.100
+Start IP address
+192.168.1.10 (first IP to hand out)
+Subnet mask
+255.255.255.0
+Maximum users
+50 (how many leases in the pool)
+Devices needed
+1× Router (1941 or 2911), 1× 2960 Switch, 3× PCs
+Connections
+Router G0/0 → Switch Fa0/5  |  PC0 → Fa0/1  |  PC1 → Fa0/2  |  PC2 → Fa0/3
+Router> enable
+Router# configure terminal
+Router(config)# hostname R1
+R1(config)# interface GigabitEthernet0/0
+R1(config-if)# ip address 192.168.1.1 255.255.255.0
+R1(config-if)# no shutdown
+R1(config-if)# exit
+R1(config)# ip dhcp excluded-address 192.168.1.1 192.168.1.10
+R1(config)# ip dhcp pool LAN-POOL
+R1(dhcp-config)# network 192.168.1.0 255.255.255.0
+R1(dhcp-config)# default-router 192.168.1.1
+R1(dhcp-config)# dns-server 8.8.8.8
+R1(dhcp-config)# lease 7
+R1(dhcp-config)# exit
+R1(config)# end
+R1# write memory
+On each PC → Desktop → IP Configuration → select DHCP. After a few seconds they should receive addresses from the router.
+On PC0, open the Command Prompt and verify:
+PC> ipconfig
+Verify DHCP is working — all commands
+Use these commands to confirm everything is functioning:
+R1# show ip dhcp pool
+Shows pool name, network, total addresses, leased count
+R1# show ip dhcp binding
+Lists every active lease: MAC address, IP given, expiry time
+R1# show ip dhcp conflict
+Shows IPs that caused a conflict (should be empty)
+PC> ipconfig /all
+On the PC — shows full IP info including DHCP server address
+PC> ping 192.168.1.1
+Confirms PC can reach its gateway — basic connectivity test
